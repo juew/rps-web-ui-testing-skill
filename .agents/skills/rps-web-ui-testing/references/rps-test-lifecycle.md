@@ -12,7 +12,9 @@
 - Confirm RPS access and account availability outside the reusable skill.
 - Confirm source and target data connections.
 - Confirm source data setup and target cleanup policy.
-- Preserve setup, increment, validation, and cleanup SQL as project artifacts.
+- Generate required source tables and source data during the test process unless the user explicitly approves prepared data for the run.
+- Preserve setup, seed data, incremental DML, validation, and cleanup SQL as project artifacts.
+- When available, compare the intended RPS operation flow with user-provided historical test records and RPS product documentation before execution.
 
 ## 3. Execute RPS UI Flow
 
@@ -23,10 +25,12 @@
 - Execute task and monitor progress.
 - Capture task monitor and task log evidence.
 - Validate results through RPS pages and data checks.
+- Adjust operation steps when a user-provided historical record or RPS product document shows a more accurate product flow, and record the adjustment in the execution log.
 
 ## 4. Record Results
 
 - Update Word report section with test说明表, steps, screenshots, SQL/log evidence, result, and conclusion.
+- Include or reference the SQL used for source table/data generation, DML changes, validation, and cleanup.
 - Register defects in Excel using the RPS defect template.
 - Keep task ID separate from official case ID.
 

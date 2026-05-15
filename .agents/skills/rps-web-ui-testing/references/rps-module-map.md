@@ -11,6 +11,10 @@ This map is based on the verified test scope in `final-test-state.md` and the Wo
 | 内容比对 | `rps_708`, `rps_709`, `rps_710`, `rps_711` | Quantity compare, static full compare, sample compare, dynamic compare | source_verified |
 | 权限/角色 | 未找到明确证据 | Role-based access, forbidden actions, permission prompts | missing |
 
+## Conditional Module Notes
+
+DDL synchronization coverage is chain-conditional. For the current MySQL-to-GaussDB scope workbook, the conditional examples are `rps_769`, `rps_770`, `rps_777`, and `rps_778`, covering DDL table-level and database/schema-level synchronization under incremental and full+incremental modes. Confirm whether the active chain requires these cases before executing or reporting them as required coverage.
+
 ## Usage
 
 When planning an RPS test, map each test case to one module above. If a new RPS module is in scope, add it to the project-specific plan first, then gather evidence before treating it as a reusable rule.

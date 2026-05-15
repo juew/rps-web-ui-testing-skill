@@ -17,3 +17,5 @@
 - A successful retest must be a new retest record.
 - WARNING is not automatically FAIL.
 - MISSING cannot become a mandatory skill rule.
+- BLOCKED is an accepted test outcome when the current run cannot safely proceed. It is not automatically a product defect.
+- Register a BLOCKED item in the defect workbook only when main control classifies it as product behavior that violates an expected result or prevents an in-scope supported path. Otherwise record it in the Word report, scope tracker, execution log, and open-items/closure notes.

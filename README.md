@@ -2,6 +2,21 @@
 
 This skill supports formal RPS Web UI testing, including RPS UI execution, evidence capture, SQL/log artifact coordination, Word report updates, scope tracking, and defect register maintenance.
 
+## 特色功能
+
+This skill is designed for long-running, evidence-heavy RPS formal testing rather than generic web UI clicking. Its main capabilities are:
+
+- **RPS 专用流程覆盖**：覆盖结构迁移、全量同步、增量同步、全量+增量同步、DDL 同步、内容比对、预检查、任务监控、任务日志和异常场景。
+- **参考文档驱动执行**：遇到不熟悉的 RPS 操作步骤时，要求优先读取用户放入 `docs/formal-test-runs/<run-id>/reference-docs/` 的历史报告或产品文档，避免凭经验猜测。
+- **长时间测试监督**：支持心跳监督、阶段验收、子 agent 换班/恢复、停滞提醒和最终自动收尾，适合跨小时甚至隔夜的正式测试。
+- **主控与 UI agent 分工**：RPS UI executor 只操作页面和采集 UI 证据；主控负责 SQL 执行、数据验证、阶段验收、范围跟踪和最终结论，降低误操作风险。
+- **三份文档闭环**：强制把最终结果同步到范围跟踪表、Word 测试报告和缺陷登记表。UI 执行完成不等于测试完成，三份文档未校验前不能关闭测试。
+- **证据链管理**：将 case ID、RPS task ID、截图、SQL、redacted logs、Word 章节和缺陷行交叉索引，方便回看和审计。
+- **FAIL/BLOCKED 分类规则**：区分产品缺陷、环境问题、预置条件缺失、权限不足、预期校验拦截和 unsupported path，避免把所有 BLOCKED 都误登记为缺陷。
+- **敏感信息保护**：明确禁止把账号、密码、token、JDBC 串、内网 URL/IP 或私有 endpoint 写入 skill、报告、缺陷表或截图产物。
+- **文档模板资产**：内置范围跟踪表、链路测试报告、缺陷登记表的空白模板，可复制到每次 run 目录后再写入运行数据。
+- **LibreOffice 可选校验**：支持用 `soffice` 做 Word 报告视觉渲染检查；如果本机或沙箱中崩溃，会降级为 DOCX ZIP/XML/media/hash 检查和人工视觉复核，不阻塞测试收尾。
+
 ## 安装方式
 
 This repository root is the skill root. Install it by cloning the repository and linking the repository directory into Codex skills:

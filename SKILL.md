@@ -5,7 +5,7 @@ description: Use this skill when testing the RPS software web UI, including RPS 
 
 # RPS Web UI Testing
 
-This is a candidate skill for RPS software Web UI testing. It is not installed as a formal skill.
+This is the root skill for RPS software Web UI testing.
 
 ## 1. 适用场景
 

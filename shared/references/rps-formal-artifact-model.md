@@ -9,7 +9,7 @@ Use this reference when a formal RPS Web UI test run must produce coordinated tr
 | Scope tracking workbook | Test scope, progress, case ID mapping, stage status | Yes, for scope and execution state | Yes, after user approval |
 | Chain test record DOCX | Per-chain execution process, screenshots, SQL/log evidence, conclusions | No, derived from execution evidence | Yes, in run directory only |
 | Defect register workbook | FAIL/BLOCKED issue registration and screenshot references | No, derived from accepted defect candidates | Yes, in run directory only |
-| Markdown run files | Agent coordination, evidence index, stage acceptance, final summary | Yes, for this run's process record | Yes, redacted |
+| Markdown run files | Agent coordination, evidence index, stage acceptance, final summary | Yes, for this run's process record | Yes |
 
 The first three artifacts are the user-facing result documents. A formal run may say UI execution is done before they are complete, but it must not say testing is complete until all three are updated or explicitly verified as not applicable.
 
@@ -43,21 +43,21 @@ Then write run-specific data only in that run directory.
 - After every accepted FAIL, and after every BLOCKED item that main control classifies as a product defect, the defect register must be updated before final closure. If no defect row is due, record the non-registration reason in the run notes or final closure.
 - A documentation sub-agent may return `DRAFT_DONE`, but only main control may return `DOCS_VERIFIED` after checking the actual files.
 
-## Sensitive Information Boundary
+## Internal Run Data Boundary
 
-Never write credentials, passwords, tokens, API keys, JDBC strings, private/internal URLs, or secret-bearing connection strings into reusable skill files, template assets, Markdown reports, Word drafts, or Excel drafts.
+Reusable skill files and template assets should stay workflow-focused. Do not turn one run's environment values, task IDs, screenshots, SQL data, or conclusions into reusable rules unless the user intentionally asks to maintain project-specific guidance.
 
-Database connection information may be used as runtime-only input during RPS execution. In artifacts, record only redacted labels such as `source connection configured`, `target connection configured`, or source/target database type and version.
+Run artifacts, Word drafts, Excel drafts, and Markdown reports may include the actual RPS task context, connection labels, routes, SQL outputs, and evidence needed to reproduce and audit the internal test.
 
-For long-running formal tests that require repeated sub-agent wakeups, the user may approve a project-local runtime vault for sensitive initialization data. The vault must live under a git-ignored project path such as `.runtime/<run-id>/`, be restricted to local execution, and be excluded from formal evidence, Word reports, Excel defect registers, reusable skill files, and commits. Prefer encrypted storage with a separate local key file when unattended execution needs to resume without repeatedly asking the user for the same credentials.
+For long-running formal tests that require repeated sub-agent wakeups, the user may approve a project-local runtime cache under a git-ignored path such as `.runtime/<run-id>/`. Use it only to keep unattended execution moving; it is not a formal test artifact.
 
-Runtime vault rules:
+Runtime cache rules:
 
 - Store only the minimum runtime inputs needed to operate the approved test environment.
-- Keep both the encrypted vault and any local key inside `.runtime/<run-id>/` with restrictive filesystem permissions.
-- Do not copy vault content into `docs/formal-test-runs/<run-id>/` artifacts.
-- Sub-agents may read the vault only for their assigned runtime role and must not print, summarize, screenshot, or persist the raw sensitive values elsewhere.
-- The main agent remains responsible for creating, rotating, and deleting the vault, and for confirming that generated deliverables contain only redacted environment labels.
+- Keep the cache under the current project and out of git.
+- Do not copy cache-only helper files into `docs/formal-test-runs/<run-id>/` unless the user promotes them to formal artifacts.
+- Sub-agents may read the cache only for their assigned runtime role.
+- The main agent remains responsible for creating, rotating, and deleting the cache.
 
 ## Coverage Rule
 
@@ -73,7 +73,7 @@ The handoff file is a run-local coordination artifact, not a final report delive
 
 `docs/formal-test-runs/<run-id>/agent-handoff-rps-ui.md`
 
-It may reference task IDs, case IDs, redacted evidence paths, SQL/log paths, and approved local dependency paths by purpose. It must not contain credentials, passwords, tokens, JDBC strings, private/internal URLs, or secret-bearing endpoint details.
+It may reference task IDs, case IDs, evidence paths, SQL/log paths, routes, connection labels, and approved local dependency paths by purpose.
 
 ## Closure Rule
 

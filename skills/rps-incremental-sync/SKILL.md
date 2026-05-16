@@ -22,7 +22,7 @@ If shared files are missing in the installed package, mark preflight as `BLOCKED
 - Approved baseline/full state when the case needs pre-existing synchronized rows before incremental stimuli.
 - Incremental task scope: selected tables, object mappings, DML operation options, filters, and any DDL incremental cases in scope.
 - Source-side setup, seed, DML stimulus, optional DDL stimulus, validation, and cleanup SQL prepared as run artifacts.
-- RPS connections are configured, without recording credentials, JDBC strings, internal URLs, or secrets.
+- RPS connections are configured and identifiable by the labels needed for the current run.
 - Word report, scope tracker, defect register, and evidence directory copied from shared templates into the run directory.
 
 Stop before real RPS operation if execution approval, accepted structure prerequisite, required baseline/full state, source-side DML/DDL handoff owner, validation method, or evidence destination is unclear.
@@ -49,7 +49,7 @@ Incremental sync is accepted only when:
 - Selected DML operation types are synchronized as expected, and unselected operation types are not incorrectly synchronized.
 - Insert, update, delete, row-filter, column-filter, and field-value-filter expectations in scope have matching target validation evidence.
 - In-scope DDL incremental cases have task-log and target metadata evidence, or are recorded as `NOT_APPLICABLE` with the scope decision source.
-- Source-side DML/DDL handoffs identify who executed the SQL, when it ran, and which redacted SQL/output artifacts prove it.
+- Source-side DML/DDL handoffs identify who executed the SQL, when it ran, and which SQL/output artifacts prove it.
 - RPS task monitor and task-log evidence is linked to the case ID and RPS task ID.
 - Scope tracker, Word report, and defect register obligations are updated or explicitly marked not applicable.
 
@@ -59,5 +59,5 @@ Incremental sync is accepted only when:
 - Do not let the RPS UI executor run SQL; main control owns source/target setup, DML/DDL stimuli, validation, cleanup, and acceptance.
 - Do not infer DDL synchronization support from DML cases. Treat DDL incremental coverage as chain-conditional scope.
 - Do not report UI task success as PASS without target data or metadata validation.
-- Do not store secrets or internal endpoints in skill files or reusable artifacts.
+- Do not add run-specific environment values to reusable skill instructions unless they are intentionally part of the maintained project guidance.
 - Do not silently ignore missing DML option, filter, task-log, or validation evidence. Mark it `MISSING` or `BLOCKED` and record the recovery condition.

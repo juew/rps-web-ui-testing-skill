@@ -30,4 +30,4 @@ When the current RPS UI step is unclear, inspect only the relevant section or sc
 
 Reference documents do not replace current-run evidence. Formal conclusions must still come from the current RPS UI execution, current screenshots, current task IDs, current SQL/data validation, and accepted stage review.
 
-If reference documents contain credentials, internal endpoints, database connection strings, or environment-specific values, do not persist those values in generated artifacts.
+Do not copy large reference-document sections into reusable skill files. Extract only the operation pattern needed for the current run, and keep current-run evidence in the run directory.

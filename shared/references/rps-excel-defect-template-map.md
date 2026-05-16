@@ -8,7 +8,7 @@ Based on the verified Excel defect register.
 | B | 提出人 | Tester record | Use actual submitter | Yes | If absent, mark missing |
 | C | 提出时间 | Discovery date | Use team date format | Yes | Keep sheet format |
 | D | 问题类型 | Preset value | Use existing dropdown/preset | Yes | Do not invent values |
-| E | 链路信息 | Test chain | Describe source-to-target chain without credentials | Yes | Avoid secrets |
+| E | 链路信息 | Test chain | Describe the source-to-target chain | Yes | Match project wording |
 | F | 问题描述 | Defect detail | Include case ID, task ID, repro, actual, expected, current state | Yes | Must be reproducible |
 | G | 截图 | RPS evidence | Insert or reference RPS-only screenshots | Yes | Prevent image anchor mismatch |
 | H | 测试内容 | Preset value | Use online/template preset | Yes | Avoid free text if preset exists |
@@ -30,9 +30,9 @@ The template may include placeholder rows for guidance. Remove or replace placeh
 - For formal execution or closure tasks, the defect register is one of the required user-facing result documents. A defect agent must actually edit or verify the run-local workbook, then report the output path, covered defect/case IDs, and workbook integrity checks. Do not mark defect-register work complete based only on Markdown defect notes.
 - Accepted FAIL items require either a defect-register row or a main-control note explaining why the item is not registered as a product defect. BLOCKED items require a defect-register row only when main control classifies them as product defects; otherwise the non-registration reason must be recorded in the Word report, scope tracker, or closure notes.
 - Screenshot evidence must match the defect row.
-- When one issue has multiple screenshots, follow the run workbook's `问题收集 -示例` sheet pattern if present: keep one defect/problem row group, merge the non-screenshot fields vertically across the screenshot rows, and place each screenshot vertically in the `截图` column area. Keep the relative screenshot paths as text for traceability while embedding the report-safe/redacted images.
+- When one issue has multiple screenshots, follow the run workbook's `问题收集 -示例` sheet pattern if present: keep one defect/problem row group, merge the non-screenshot fields vertically across the screenshot rows, and place each screenshot vertically in the `截图` column area. Keep the relative screenshot paths as text for traceability while embedding the formal evidence images.
 - For multi-screenshot entries, preserve the fixed header row and field order. Do not split one issue into multiple unrelated defect rows solely because it has multiple screenshots.
-- Use report-safe/redacted screenshots in Excel. Raw screenshots may be retained as evidence files, but should not be embedded in the defect workbook if they expose credentials, JDBC strings, tokens, internal URLs/IPs, or other sensitive values.
+- Use the formal RPS screenshots in Excel. If the user explicitly requests masking for an external package, embed the masked copies and keep the original evidence path in the run index.
 - Issues explicitly excluded by the team should not be registered.
 - Do not modify template styling or structure while recording defects.
 - If the online sheet uses preset dropdown values, use the preset values or mark the field for human confirmation; do not invent replacement values.

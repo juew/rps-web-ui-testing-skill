@@ -2,7 +2,7 @@
 
 Use this checklist before any real RPS web UI test execution, defect registration, evidence capture, Word report generation, or Excel defect register update.
 
-The goal is to make missing local tools, unclear scope, artifact format risks, and sensitive data exposure visible before testing starts.
+The goal is to make missing local tools, unclear scope, artifact format risks, and output ownership visible before testing starts.
 
 ## 1. Confirm Scope And Mode
 
@@ -23,24 +23,16 @@ Stop if the user has not approved a real execution step that would operate the R
 - Before committing or pushing, list the exact files to be included and wait for user confirmation.
 - If a required local dependency lives outside the project, record it as a local dependency and ask before executing it when the current task is constrained to project-only work.
 - When an outside-project dependency is approved, use only the explicitly approved exact path. Do not search, crawl, or broadly inspect the parent workspace, user home directory, tool caches, IDE caches, or driver caches.
-- If database drivers, JDBC runners, browser helpers, or other execution tools outside the project are discovered or needed, stop and ask the user whether that exact tool path may be used before reading or executing it.
+- If database drivers, database runners, browser helpers, or other execution tools outside the project are discovered or needed, stop and ask the user whether that exact tool path may be used before reading or executing it.
 - Even when the user approves an outside-project tool, every generated file, screenshot, SQL artifact, log, report, spreadsheet, and evidence index must be written strictly under the current project directory. Do not write outputs beside the outside tool, in the parent workspace, in user cache directories, or in global skill directories.
 - Sub-agents must not request permissions directly or expand tool scope on their own. The main agent must request, record, and distribute approvals for outside-project tools and exact paths. If a sub-agent encounters an unapproved tool or permission need, it must stop and return `BLOCKED` with the required exact path and reason.
 
-## 3. Check Sensitive Information Risk
+## 3. Check Internal Evidence Policy
 
-- Do not write accounts, passwords, tokens, keys, JDBC strings, internal URLs, or internal IPs into reusable skill files, README files, validation plans, or sample artifacts.
-- Use redacted placeholders for credentials and environment-specific endpoints.
-- Keep runtime-only values out of git-tracked files.
-- When the user approves repeated unattended execution, sensitive runtime inputs may be stored only in a project-local, git-ignored runtime vault such as `.runtime/<run-id>/`. Prefer encrypted storage and restrictive filesystem permissions. The vault is not a formal test artifact and must not be copied into Word, Excel, Markdown evidence, reusable skill files, commits, or screenshots.
-- Sub-agents may read an approved runtime vault only for their assigned role. They must not print, summarize, or persist raw credentials, JDBC strings, internal URLs, or internal IPs in their outputs.
-- Before publishing, sharing, committing, pushing, or handing off changed files, scan changed files for sensitive terms and private-network patterns and record the result.
-
-Required scan before commit, push, or release:
-
-```bash
-rg -n -i "(password|passwd|pwd|token|secret|api[_-]?key|access[_-]?key|jdbc:|jdbc|https?://10\.|10\.[0-9]{1,3}\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.|账号|密码|密钥|内网|Bearer|Authorization)" README.md skills shared
-```
+- Treat the run as an internal formal test unless the user states otherwise.
+- Do not pause RPS operation, screenshot capture, log capture, Word report updates, or Excel updates merely because environment details are visible.
+- Apply masking/cropping only when the user, run plan, or external-sharing package explicitly requires it.
+- Keep runtime-only helper files in project-local git-ignored paths when they are not intended as formal artifacts.
 
 ## 4. Check Local Tools
 
@@ -77,7 +69,7 @@ Record missing tools as preflight findings. If the required output depends on a 
 - Confirm Chrome is the browser used for the formal RPS page being captured.
 - Confirm the Chrome window title contains `数据复制处理软件` or `RPS`.
 - Confirm macOS Screen Recording permission is available for the process running the Swift screenshot script.
-- Confirm no visible credential, token, JDBC string, internal URL, or unrelated personal information appears in the screenshot area.
+- Confirm the screenshot area shows the intended RPS page, not unrelated desktop or personal windows.
 - Use the workspace-local Swift screenshot script as the formal RPS page screenshot method after the user has approved that dependency for the current task.
 - Treat Computer Use, Chrome automation, and Playwright screenshots/logs as operation or auxiliary evidence unless the user explicitly changes the evidence rule.
 
@@ -108,5 +100,5 @@ Stop and ask the user before continuing when:
 - Access to the RPS login page, account validation, or environment connectivity probing is needed but not approved.
 - Official Word or Excel deliverables would be modified without approval.
 - Required screenshot, document, or spreadsheet tools are missing and no acceptable fallback was approved. `soffice`/`pdftoppm` failure alone is advisory when DOCX structure checks plus human visual acceptance are available.
-- Sensitive information appears in reusable files or generated artifacts.
+- A requested external-sharing or masking rule cannot be satisfied.
 - The target module, case IDs, expected output format, or evidence destination is unclear.

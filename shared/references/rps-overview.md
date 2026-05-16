@@ -22,10 +22,8 @@ RPS is tested as a Web UI product for database migration and replication workflo
 
 ## What Must Stay Project-Specific
 
-- Exact environment URL.
-- Account/password.
-- Database credentials and internal endpoints.
-- Concrete schema names, task IDs, and SQL data.
+- Exact environment URL used by one run.
+- Concrete schema names, connection names, task IDs, and SQL data from one run.
 - Temporary UI automation workarounds.
 
 These values may appear in a project test run, but they must not be embedded into the reusable skill.

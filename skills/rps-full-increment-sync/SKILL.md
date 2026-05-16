@@ -11,7 +11,7 @@ This skill specializes the RPS Web UI testing process for full + incremental syn
 - Shared templates: `../../shared/assets/templates/`
 - Focused rules: `references/full-increment-sync-rules.md`
 
-Do not copy credentials, passwords, tokens, JDBC strings, internal URLs, private endpoints, or project-specific database details into this skill or reusable references.
+Keep reusable instructions focused on the testing workflow. Put current-run environment details in the run artifacts when they are needed for evidence or reproducibility.
 
 ## 1. Preconditions
 
@@ -19,7 +19,7 @@ Before starting a full + increment case, confirm and record:
 
 - RPS version, migration chain, official case IDs, and scope rows.
 - Accepted structure migration for the selected objects. If structure migration is not accepted, stop and return `BLOCKED` with the missing prerequisite.
-- Source and target connections already configured in RPS, identified only by redacted labels.
+- Source and target connections already configured in RPS and identifiable by the labels needed for the current run.
 - Source tables and source data generated during the current test run, unless the user explicitly approved a prepared dataset.
 - Main control owns source/target SQL execution, source-side DML/DDL stimuli, validation SQL, cleanup SQL, stage acceptance, and user-facing documents.
 - The RPS UI executor owns only RPS page operation, RPS task creation/configuration, RPS monitor/log inspection, and RPS-only screenshots.
@@ -81,7 +81,7 @@ For every accepted test point, collect or reference:
 - Full phase monitor/log evidence and completion status.
 - Incremental running phase monitor/log evidence.
 - RPS task log evidence after each DML/DDL stimulus.
-- SQL artifact references for setup, stimulus, validation, and cleanup, without sensitive connection details.
+- SQL artifact references for setup, stimulus, validation, and cleanup.
 - Target validation result from main control.
 - Word report section, scope tracker row, and defect register row when applicable.
 
@@ -120,4 +120,4 @@ Use shared templates from `../../shared/assets/templates/` when available, copie
 - Do not assume structure migration passed without accepted evidence.
 - Do not treat DDL cases as mandatory unless the chain scope includes them.
 - Do not overwrite historical FAIL with PASS; create a retest record when needed.
-- Do not store sensitive connection details or internal endpoints in reusable skill files.
+- Do not add run-specific environment values to reusable skill instructions unless they are intentionally part of the maintained project guidance.

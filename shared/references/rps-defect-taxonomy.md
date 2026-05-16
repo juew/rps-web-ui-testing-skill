@@ -25,7 +25,7 @@ These observed failures are examples from the test run. Do not turn them into pe
 
 - Case ID.
 - RPS task ID, if applicable.
-- Environment or chain description without credentials.
+- Environment or chain description.
 - Reproduction steps.
 - Actual result.
 - Expected result.

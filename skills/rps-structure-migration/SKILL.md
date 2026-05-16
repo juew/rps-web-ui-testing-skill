@@ -21,7 +21,7 @@ If shared files are missing in the installed package, mark preflight as `BLOCKED
 - Approved structure object scope: tables, sequences, indexes, foreign keys, users, views, synonyms, and any explicitly out-of-scope object type.
 - Whether foreign keys must be migrated now or deferred until after data migration.
 - Approved source object/data preparation SQL and target cleanup policy.
-- RPS connections are configured, without recording credentials, connection strings, internal URLs, or sensitive values.
+- RPS connections are configured and identifiable by the labels needed for the current run.
 - Word report, scope tracker, defect register, and evidence directory copied from shared templates into the run directory.
 
 Stop before real RPS operation if execution approval, source/target object scope, target cleanup approval, or evidence destination is unclear.
@@ -54,6 +54,6 @@ If this gate is not accepted, downstream full sync, incremental sync, full+incre
 ## Boundaries
 
 - Do not operate RPS, modify official Word/Excel artifacts, or execute cleanup SQL in plan-only, review-only, preflight-only, or simulation-only mode.
-- Do not store sensitive values or internal endpoints in skill files or reusable artifacts.
+- Do not add run-specific environment values to reusable skill instructions unless they are intentionally part of the maintained project guidance.
 - Do not infer product support for object types from neighboring cases; use the current scope, product documentation, task logs, and validation evidence.
 - Do not silently ignore missing structural evidence. Mark it `MISSING` or `BLOCKED` and record the recovery condition.

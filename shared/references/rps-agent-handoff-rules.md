@@ -52,7 +52,7 @@ The handoff must include:
 - Key evidence paths for the latest PASS, FAIL, or BLOCKED item.
 - Known blockers, deviations, defects, and superseded attempts.
 - Runtime-only dependencies that require main-agent approval, listed by purpose and exact path only when already approved.
-- Sensitive information reminder: do not print or copy credentials, JDBC strings, internal URLs/IPs, tokens, or secrets.
+- Evidence handling note: include the route, task context, connection labels, and artifact paths needed to resume safely.
 
 If there is no safe resume point, mark the next action as `MAIN_CONTROL_DECISION_REQUIRED`.
 

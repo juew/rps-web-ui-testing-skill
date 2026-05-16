@@ -30,24 +30,22 @@ Every SQL reference must map back to:
 - Test case ID.
 - RPS task ID, when applicable.
 - Test function point.
-- Source/target role, without credentials.
+- Source/target role.
 - Evidence path or appendix section.
 
-## Sensitive Information Boundary
+## Internal Run Data
 
-Do not write usernames, passwords, tokens, JDBC strings, private/internal URLs, or secret-bearing connection strings into SQL artifacts, Word records, Excel registers, Markdown indexes, or reusable skill files.
-
-Use placeholders such as `<source_connection>`, `<target_connection>`, `<schema_name>`, and `<database_name>` when a connection detail would reveal sensitive information.
+Run-local SQL artifacts and reports may include the schema names, connection labels, object names, validation outputs, and operational context needed to reproduce the internal test. Keep reusable skill instructions generic unless the user intentionally asks to maintain project-specific guidance.
 
 ## Failure Handling
 
 If a test fails because setup SQL, data generation SQL, or validation SQL is missing, mark the case as `BLOCKED` or `missing evidence` rather than inferring a product result.
 
-When a failure is plausibly caused by residual objects from a previous test attempt, the executing agent should perform a scoped diagnosis instead of stopping at the first UI error. The diagnosis must be limited to the current run's approved source/target test objects, save inspection and cleanup SQL as run artifacts, and avoid recording raw connection details.
+When a failure is plausibly caused by residual objects from a previous test attempt, the executing agent should perform a scoped diagnosis instead of stopping at the first UI error. The diagnosis must be limited to the current run's approved source/target test objects, and must save inspection and cleanup SQL as run artifacts.
 
 Target cleanup is allowed only when approved for the run and must be narrowly scoped:
 
-- Inspect before cleanup and record what objects are present using redacted labels.
+- Inspect before cleanup and record what objects are present.
 - Drop or clean only the current test case's dedicated objects, schemas, constraints, or residual artifacts.
 - Do not perform broad database cleanup, instance-level changes, user/role changes, or unrelated schema deletion.
 - Preserve cleanup SQL and validation output under the run directory.

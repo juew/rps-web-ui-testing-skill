@@ -31,7 +31,7 @@ These must stay in examples and never become standardized rules:
 - Temporary task IDs and schema names.
 - Temporary screenshots and file paths.
 - Temporary browser focus/cross-screen operation issues.
-- Exact internal URLs, credentials, database endpoints, or sensitive connection strings.
+- One-run environment URLs, connection names, schema names, and task IDs.
 - Chain-specific decision to not migrate foreign keys during structure migration unless future RPS documentation confirms it as a general rule.
 
 ## Evidence Promotion Rule

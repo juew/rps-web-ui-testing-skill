@@ -42,7 +42,7 @@ The RPS UI executor must not execute SQL.
 1. Confirm scope, case ID, chain, objects, and accepted structure migration.
 2. Confirm source data setup and expected baseline with main control.
 3. Create the RPS full + increment task.
-4. Select source and target connections using redacted labels only.
+4. Select source and target connections using the labels needed for the current run.
 5. Select in-scope objects and mappings.
 6. Configure row filters, column/field mappings, field-value filters, and DML operation types according to the case.
 7. Run required precheck and record prompts or failures.
@@ -144,7 +144,7 @@ SQL artifact expected:
 Last evidence path:
 Next UI stop point:
 Risk or blocker:
-Sensitive information included: no
+Evidence path:
 ```
 
 If `Incremental phase running` is not `yes`, do not ask main control to execute the stimulus.

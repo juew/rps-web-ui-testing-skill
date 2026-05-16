@@ -10,7 +10,7 @@ This example is project-specific. Do not promote project values to permanent RPS
 - Defect register: Excel register with A-I fields.
 - Evidence: RPS screenshot directory, SQL files, task log screenshots, and limited console evidence.
 
-Sensitive environment URLs, accounts, passwords, database endpoints, and connection strings are intentionally omitted.
+One-run environment values are intentionally omitted from this reusable example.
 
 ## Scope
 

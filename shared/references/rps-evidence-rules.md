@@ -4,8 +4,7 @@
 
 - Formal screenshots must show the RPS page, RPS task monitor, RPS task log, RPS comparison report, or RPS error prompt.
 - Formal test records and defect/error records must not be left without screenshot evidence solely because the page contains route, account context, task context, or operational details.
-- If a page contains sensitive values, first reduce exposure by closing detail panels, collapsing connection sections, navigating to a less-sensitive result/log view, cropping, or redacting the screenshot copy used in reports. Do not skip evidence capture.
-- Credentials, passwords, tokens, JDBC strings, and secret-bearing connection strings must not appear in report/defect screenshots. If they are unavoidable in the raw capture, keep the raw capture out of formal Word/Excel output, create a redacted copy under the run evidence directory, and index both the redaction action and the formal evidence path.
+- For internal formal runs, capture the RPS evidence directly. If the user or run plan asks for masking, create the masked copy after capture and index both the original evidence path and the formal evidence path.
 - Error prompts and failed task result pages require screenshots. Missing failure screenshots must be treated as an evidence gap that needs immediate remediation, not as an acceptable skip.
 - In the standard local workflow, formal RPS page screenshots are captured with the workspace-local Swift/CoreGraphics Chrome-window script:
   `/Users/zhonghao/Downloads/workspace/codex_workspace/tools/capture_chrome_rps_window.swift`.
@@ -21,9 +20,8 @@
 
 ## Page URL / Route Evidence
 
-- Record the RPS page route, path, menu label, or redacted URL when it helps reproduce the step.
-- Do not store internal hosts, full internal URLs, credentials, tokens, query secrets, JDBC strings, database endpoints, or private connection details in reusable skill files.
-- If the exact URL is sensitive, record only the route fragment, page title, menu path, and screenshot evidence.
+- Record the RPS page route, path, menu label, or URL when it helps reproduce the step.
+- Do not invent masking requirements. Use the exact route or URL when it is needed for internal reproducibility, unless the user asks for a masked record.
 
 ## Task Log Evidence
 
@@ -50,7 +48,7 @@ Every formal result should be traceable across:
 
 - Case ID.
 - RPS task ID if applicable.
-- Page route/path or menu path when available without sensitive data.
+- Page route/path or menu path when available.
 - Operation steps, expected result, and actual result.
 - Word report section.
 - Excel defect row if failed.

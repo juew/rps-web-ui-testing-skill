@@ -26,4 +26,4 @@ Current evidence contains RPS screenshots and task pages, but no complete standa
 
 ## Rule
 
-For future RPS testing, capture the current page URL path or route fragment when it is available without exposing sensitive internal hostnames. Do not store credentials or internal endpoint details in the reusable skill. If a full route inventory is not required by the project, mark it out of scope.
+For future RPS testing, capture the current page URL path or route fragment when it helps reproduce the step. Treat a full route inventory as scope-dependent; if the project does not require it, mark it out of scope.

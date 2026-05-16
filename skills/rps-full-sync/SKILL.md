@@ -86,11 +86,10 @@ Stop and report `BLOCKED` when:
 - Real UI operation is not approved.
 - Source data, filter expectation, or validation method is missing.
 - UI executor would need SQL/database access to continue.
-- Sensitive credentials, JDBC strings, internal URLs, tokens, or passwords would enter reusable files or formal screenshots.
 - Precheck fails in a way that requires main-control decision before execution.
 
 ## Output Expectations
 
 For plan-only work, output scope, prerequisites, missing inputs, evidence requirements, and forbidden actions only.
 
-For real execution, produce or update run-local artifacts only: scope tracking, Word report, defect register when required, execution log, evidence index, screenshots, SQL artifact references, and final acceptance notes. Keep project-specific schemas, data, endpoints, and credentials out of this skill.
+For real execution, produce or update run-local artifacts only: scope tracking, Word report, defect register when required, execution log, evidence index, screenshots, SQL artifact references, and final acceptance notes. Do not turn one run's environment details into reusable skill instructions unless the user intentionally asks for that project guidance.

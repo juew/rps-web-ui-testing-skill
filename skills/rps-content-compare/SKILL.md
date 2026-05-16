@@ -5,7 +5,7 @@ description: Use when testing RPS Web UI content comparison flows, including qua
 
 # RPS Content Compare Testing
 
-Use this skill for formal RPS Web UI content comparison testing. It is a child skill of the RPS Web UI testing process and inherits the root rules for scope control, evidence, status, report closure, and sensitive-data handling.
+Use this skill for formal RPS Web UI content comparison testing. It is a child skill of the RPS Web UI testing process and inherits the shared rules for scope control, evidence, status, report closure, and internal-run evidence handling.
 
 ## Required References
 
@@ -56,7 +56,7 @@ Load `references/content-compare-rules.md` when planning or executing specific c
 4. Configure only the approved objects, comparison type, and options. Capture screenshots before submit when they prove scope or settings.
 5. Submit or launch the comparison task only when the current action is execution-authorized.
 6. Monitor the RPS task/report until it reaches a stable terminal state, or record `BLOCKED`/`FLAKY` if it does not converge within the approved wait policy.
-7. Capture RPS report screenshots, task ID, task log/report state, object-level difference evidence, and redacted route/menu context.
+7. Capture RPS report screenshots, task ID, task log/report state, object-level difference evidence, and route/menu context.
 8. Hand the result to main control for data validation acceptance, Word report update, scope tracker update, and defect-register decision.
 
 ## Result Rules
@@ -73,7 +73,7 @@ Never convert a missing prerequisite or unclear route into PASS/FAIL by inferenc
 For each compare case, record:
 
 - Official case ID and RPS compare/sync task ID.
-- Compare type, object scope, source/target connection labels in redacted form, and selected options.
+- Compare type, object scope, source/target connection labels, and selected options.
 - Screenshots of configuration, launch point, monitor/report state, and difference details.
 - RPS task logs or report logs when available.
 - SQL/data artifact references from main control, not SQL execution by the UI executor.
@@ -88,5 +88,5 @@ Stop and report `BLOCKED` when:
 - Accepted structure migration or synchronized source/target baseline is missing.
 - Dynamic compare lacks a safe existing running incremental task or explicit user/main-control anchor.
 - Dynamic compare routing is unclear and current-run reference documents do not resolve it.
-- RPS asks for credentials, unsafe endpoint details, destructive operations, or SQL execution by the UI executor.
+- RPS asks for destructive operations or SQL execution by the UI executor.
 - The requested output would require editing files outside this skill's owned write set without explicit user approval.

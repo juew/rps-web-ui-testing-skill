@@ -31,7 +31,7 @@ The RPS UI executor must not execute SQL, open database tools, change source/tar
 
 - Formal evidence must use RPS-only screenshots when screenshots are required.
 - Link every screenshot, SQL artifact, log, Word section, and defect row to the official case ID and RPS task ID.
-- Preserve setup SQL, seed SQL, DML/DDL stimulus SQL, validation SQL, cleanup SQL, and redacted logs under the run directory.
+- Preserve setup SQL, seed SQL, DML/DDL stimulus SQL, validation SQL, cleanup SQL, and logs under the run directory.
 - Missing screenshots, task logs, SQL output, or validation evidence must be recorded as `MISSING` or `BLOCKED`; do not infer completion from neighboring cases.
 
 ## User-Facing Documents
@@ -50,11 +50,11 @@ Every accepted PASS, FAIL, BLOCKED, or accepted-with-notes case must have Word r
 - For unclear UI flows, labels, expected prompts, dynamic comparison routes, DDL behavior, or historical operation patterns, consult current-run reference docs before proceeding.
 - If reference docs and current UI disagree, prefer current RPS evidence for the actual run, record the discrepancy, and stop when the route cannot be safely inferred.
 
-## Sensitive Information
+## Internal Test Evidence
 
-Do not store credentials, passwords, tokens, API keys, JDBC strings, internal URLs/IPs, private endpoints, or secret-bearing connection strings in reusable skill files, reports, Excel registers, screenshots, or Markdown artifacts.
+Default to complete internal-test evidence. Do not pause, skip screenshots, omit logs, or delay report/defect updates solely because RPS routes, task context, connection labels, SQL outputs, or environment details are visible.
 
-Use redacted labels for source and target connections.
+Apply masking or cropping only when the user, run plan, or external-sharing requirement explicitly asks for it. Record any requested masking action in the evidence index.
 
 ## Status Taxonomy
 
@@ -74,6 +74,6 @@ Before closing a heartbeat or sub-agent set:
 
 - Verify scope tracker, Word report, and defect register consistency.
 - Verify DOCX/XLSX ZIP integrity or record rendering limitations for human visual review.
-- Verify screenshot/media references and redacted log references.
+- Verify screenshot/media references and log references.
 - Verify final `stage-acceptance.md`, `execution-log.md`, `agent-heartbeat.md`, and `evidence-index.md` entries.
 - Stop heartbeat and close sub-agents only after final artifacts are verified.

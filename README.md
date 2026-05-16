@@ -15,9 +15,9 @@ EN:
 - Long-running supervision with heartbeat checks, stage acceptance, sub-agent handoff/recovery, stagnation nudges, and final closure.
 - Clear main-control vs UI-agent boundary: the UI executor operates RPS pages only; main control owns SQL, validation, acceptance, scope tracking, and final conclusions.
 - Three-document closure: scope tracker, Word test report, and defect register must be updated and verified before testing can be called complete.
-- Evidence chain management across case IDs, RPS task IDs, screenshots, SQL, redacted logs, Word sections, and defect rows.
+- Evidence chain management across case IDs, RPS task IDs, screenshots, SQL, logs, Word sections, and defect rows.
 - FAIL/BLOCKED classification that separates product defects from environment issues, missing prerequisites, permissions, expected validation stops, and unsupported paths.
-- Sensitive information protection: credentials, tokens, JDBC strings, internal URLs/IPs, and private endpoints must not be stored in skill files or formal artifacts.
+- Internal-test-first evidence handling: capture real RPS pages, logs, SQL outputs, and connection labels by default; apply masking only when explicitly requested.
 - Shared document templates for scope tracking, chain test records, and defect registers.
 - Optional LibreOffice/`soffice` rendering checks for Word reports, with fallback to DOCX ZIP/XML/media/hash checks when rendering is unstable.
 
@@ -28,9 +28,9 @@ EN:
 - 支持长时间测试监督：心跳检查、阶段验收、子 agent 换班/恢复、停滞提醒和最终收尾。
 - 主控与 UI agent 分工清晰：UI executor 只操作 RPS 页面；主控负责 SQL、验证、验收、范围跟踪和最终结论。
 - 三份文档闭环：范围跟踪表、Word 测试报告、缺陷登记表必须更新并校验后，才能宣布测试完成。
-- 证据链管理：把 case ID、RPS task ID、截图、SQL、脱敏日志、Word 章节和缺陷行串起来，便于审计。
+- 证据链管理：把 case ID、RPS task ID、截图、SQL、日志、Word 章节和缺陷行串起来，便于审计。
 - FAIL/BLOCKED 分类：区分产品缺陷、环境问题、前置条件缺失、权限不足、预期校验拦截和 unsupported path。
-- 敏感信息保护：账号、密码、token、JDBC 串、内网 URL/IP、私有 endpoint 不得写入 skill 或正式产物。
+- 内部测试效率优先：默认直接采集真实 RPS 页面、日志、SQL 输出和连接标签；只有明确要求时才做遮罩处理。
 - 共享文档模板：范围跟踪表、链路测试记录、缺陷登记表模板统一放在 shared 中。
 - LibreOffice/`soffice` 是可选报告渲染校验工具；不稳定时降级为 DOCX ZIP/XML/media/hash 检查。
 

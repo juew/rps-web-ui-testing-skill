@@ -7,7 +7,7 @@ Use this reference after `../SKILL.md` has triggered and the run is authorized f
 - Content comparison depends on an accepted structure migration and a source/target synchronized baseline.
 - Main control owns source setup, target validation, SQL execution, cleanup, acceptance, and document closure.
 - The RPS UI executor owns only page operation, RPS screenshots, task/report monitoring, and UI evidence collection.
-- Preserve SQL and validation output as run artifacts; do not paste credentials, JDBC strings, private endpoints, or secrets into reusable skill files.
+- Preserve SQL and validation output as run artifacts, and keep reusable skill instructions focused on stable workflow rather than one-run environment details.
 - If a route, option label, or expected dialog differs from this reference, consult current-run reference docs and record the decision basis.
 
 ## Quantity Compare

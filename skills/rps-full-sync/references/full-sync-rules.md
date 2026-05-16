@@ -21,7 +21,7 @@ Accepted structure migration is required before full sync testing. The accepted 
 For each case, define before UI execution:
 
 - Official case ID and scenario type.
-- Source table and target object names using redacted placeholders where needed.
+- Source table and target object names.
 - Accepted structure migration evidence reference.
 - Source row set, row-count expectation, filter-included rows, and filter-excluded rows.
 - Selected columns and excluded columns for column-filter cases.
@@ -45,7 +45,6 @@ The UI executor must not:
 - Execute SQL or use database tools.
 - Change source/target data outside the RPS UI task configuration.
 - Accept structure migration, clean target objects, or classify final database correctness.
-- Store credentials, JDBC strings, internal hosts, passwords, or tokens in reusable files or formal artifacts.
 
 ## Precheck Behavior
 
@@ -59,7 +58,7 @@ Treat precheck as a testable behavior, not a formality:
 
 ## Validation Rules
 
-Main control validates final results with run-local SQL artifacts and redacted outputs:
+Main control validates final results with run-local SQL artifacts and outputs:
 
 - Non-filter: compare source and target counts plus representative content.
 - Row filter: prove included rows and excluded rows separately.

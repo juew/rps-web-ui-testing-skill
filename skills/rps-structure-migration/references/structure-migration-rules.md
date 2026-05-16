@@ -14,7 +14,7 @@ Track each in-scope object type separately:
 | Foreign keys | Migrated or explicitly deferred; referenced table/column mapping is recorded; disabled/deferred state is not treated as PASS unless approved. |
 | Users | User/owner migration is validated only when in scope; otherwise mark out of scope. Do not alter instance-level users without approval. |
 | Views | View exists and compiles or its unsupported syntax is classified with task-log evidence. |
-| Synonyms | Synonym exists and points to the expected redacted object label, or unsupported behavior is classified. |
+| Synonyms | Synonym exists and points to the expected object label, or unsupported behavior is classified. |
 
 ## Task Evidence
 
@@ -29,7 +29,7 @@ Capture RPS-only evidence for:
 ## Validation Rules
 
 - Validate structure through target metadata SQL or database inspection approved for the run.
-- Keep validation SQL and outputs under the run directory, redacted.
+- Keep validation SQL and outputs under the run directory.
 - Validate object existence before object detail checks.
 - Treat residual target objects from previous runs as a diagnosis item, not as proof that migration succeeded.
 - If cleanup is approved, inspect before cleanup, clean only current-run dedicated objects, preserve cleanup SQL, and rerun the affected step.

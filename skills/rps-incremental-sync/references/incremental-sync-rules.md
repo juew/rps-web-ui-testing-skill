@@ -7,7 +7,7 @@ Use these rules when executing or reviewing an RPS incremental synchronization s
 - Accepted structure migration is required before incremental sync, unless the user or main control records a case-specific waiver.
 - A baseline/full synchronized state is required when the expected result depends on rows already existing on the target before incremental DML.
 - Source objects and source data must be generated or explicitly approved for the current run. Do not assume old source tables or target rows are valid evidence.
-- Preserve setup, seed, incremental DML, optional DDL, validation, and cleanup SQL under the run directory with redacted labels.
+- Preserve setup, seed, incremental DML, optional DDL, validation, and cleanup SQL under the run directory.
 
 ## DML Operation Option Coverage
 
@@ -46,7 +46,7 @@ At each stimulus point, the UI executor records:
 - current case ID and RPS task ID
 - RPS page/state and whether the incremental task is ready for source-side changes
 - requested SQL artifact path and expected operation type
-- exact stop/resume condition, without credentials or connection strings
+- exact stop/resume condition
 
 Main control executes or coordinates approved source-side SQL, records the handoff result, then tells the UI executor to resume monitoring. If the handoff is ambiguous or the SQL artifact is missing, mark the case `BLOCKED` rather than improvising SQL in the UI execution role.
 
@@ -74,7 +74,7 @@ If DDL sync is not required for the current chain, record `NOT_APPLICABLE` or ou
 Capture RPS-only evidence for:
 
 - incremental task creation or selected existing task
-- source/target connection labels after redaction
+- source/target connection labels
 - selected tables and mappings
 - DML operation option selected/unselected state
 - row, column, and field-value filter configuration

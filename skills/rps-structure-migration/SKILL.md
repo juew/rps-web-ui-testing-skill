@@ -10,6 +10,7 @@ This skill is the foundation gate for RPS migration-chain testing. Downstream sy
 ## Required Shared Material
 
 - Shared formal-run rules: `../../shared/references/rps-common-formal-run-rules.md`
+- Parallel execution rules: `../../shared/references/rps-parallel-execution-rules.md`
 - Shared templates: `../../shared/assets/templates/`
 - Structure rules: `references/structure-migration-rules.md`
 
@@ -36,7 +37,7 @@ Stop before real RPS operation if execution approval, source/target object scope
 6. Execute the task, monitor progress, and capture task status, task details, and task-log screenshots.
 7. Validate target structure outside the UI with approved SQL or database metadata checks. Compare expected and actual tables, columns, types, defaults, comments, sequences, indexes, constraints, users, views, synonyms, and foreign-key handling.
 8. Accept, fail, block, or mark missing evidence for the structure stage. Update the scope tracker and Word report. Register confirmed product defects in the defect workbook.
-9. Authorize downstream sync/compare testing only after the accepted structure result is recorded in the run artifacts.
+9. Authorize downstream sync/compare testing only after the accepted structure result is recorded in the run artifacts. If the run will use parallel downstream lanes, record the structure gate acceptance and lane-opening decision before waking downstream agents.
 
 ## Acceptance Gate
 

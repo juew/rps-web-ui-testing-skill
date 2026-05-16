@@ -10,6 +10,7 @@ Use this skill for formal RPS Web UI content comparison testing. It is a child s
 ## Required References
 
 - Shared formal-run rules: `../../shared/references/rps-common-formal-run-rules.md`
+- Parallel execution rules when running beside other modules: `../../shared/references/rps-parallel-execution-rules.md`
 - Shared templates: `../../shared/assets/templates/`
 - Local compare details: `references/content-compare-rules.md`
 
@@ -73,6 +74,7 @@ Never convert a missing prerequisite or unclear route into PASS/FAIL by inferenc
 For each compare case, record:
 
 - Official case ID and RPS compare/sync task ID.
+- Lane name and isolated evidence paths when running in parallel.
 - Compare type, object scope, source/target connection labels, and selected options.
 - Screenshots of configuration, launch point, monitor/report state, and difference details.
 - RPS task logs or report logs when available.

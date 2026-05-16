@@ -10,6 +10,7 @@ This skill covers RPS incremental synchronization cases after the target structu
 ## Required Shared Material
 
 - Shared formal-run rules: `../../shared/references/rps-common-formal-run-rules.md`
+- Parallel execution rules when running beside other modules: `../../shared/references/rps-parallel-execution-rules.md`
 - Shared templates: `../../shared/assets/templates/`
 - Incremental rules: `references/incremental-sync-rules.md`
 
@@ -51,6 +52,7 @@ Incremental sync is accepted only when:
 - In-scope DDL incremental cases have task-log and target metadata evidence, or are recorded as `NOT_APPLICABLE` with the scope decision source.
 - Source-side DML/DDL handoffs identify who executed the SQL, when it ran, and which SQL/output artifacts prove it.
 - RPS task monitor and task-log evidence is linked to the case ID and RPS task ID.
+- Parallel-lane name, object boundary, and evidence directories are recorded when this stage runs beside other downstream modules.
 - Scope tracker, Word report, and defect register obligations are updated or explicitly marked not applicable.
 
 ## Boundaries

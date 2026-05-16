@@ -43,6 +43,19 @@ Then write run-specific data only in that run directory.
 - After every accepted FAIL, and after every BLOCKED item that main control classifies as a product defect, the defect register must be updated before final closure. If no defect row is due, record the non-registration reason in the run notes or final closure.
 - A documentation sub-agent may return `DRAFT_DONE`, but only main control may return `DOCS_VERIFIED` after checking the actual files.
 
+## Parallel Lane Artifact Rule
+
+In a parallel downstream run, lane agents should write lane-local artifacts before final merge:
+
+- `lanes/<lane-name>/lane-plan.md`
+- `lanes/<lane-name>/lane-result.md`
+- `lanes/<lane-name>/evidence-index.md`
+- `lanes/<lane-name>/sql/`
+- `lanes/<lane-name>/logs/`
+- `lanes/<lane-name>/screenshots/`
+
+The final scope tracker, Word report, and defect register are shared user-facing documents. Do not let multiple lanes write them concurrently unless main control assigns non-overlapping write ranges and verifies the result immediately. The default is lane-local draft first, main-control merge second.
+
 ## Internal Run Data Boundary
 
 Reusable skill files and template assets should stay workflow-focused. Do not turn one run's environment values, task IDs, screenshots, SQL data, or conclusions into reusable rules unless the user intentionally asks to maintain project-specific guidance.

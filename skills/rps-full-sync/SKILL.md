@@ -21,7 +21,7 @@ If any prerequisite is missing, stop with `BLOCKED` or planning-only output inst
 
 ## Shared Rules And Assets
 
-Follow shared formal-run rules from `../../shared/references/rps-common-formal-run-rules.md` when available. Use shared blank templates from `../../shared/assets/templates/` as starting points for run-local copies only. Do not create or modify shared files from this skill.
+Follow shared formal-run rules from `../../shared/references/rps-common-formal-run-rules.md` when available. If this case runs beside other downstream modules, also follow `../../shared/references/rps-parallel-execution-rules.md`. Use shared blank templates from `../../shared/assets/templates/` as starting points for run-local copies only. Do not create or modify shared files from this skill.
 
 For full sync scenario details, read `references/full-sync-rules.md`.
 
@@ -74,6 +74,7 @@ Every formal result must link:
 - Accepted structure migration evidence or reference.
 - RPS configuration, precheck, monitor, and log screenshots.
 - SQL setup and validation artifact paths owned by main control.
+- Lane name and isolated evidence paths when running in parallel.
 - Final status: `PASS`, `FAIL`, `BLOCKED`, `WARNING`, `MISSING`, or `NEEDS_RETEST`.
 
 Do not mark PASS from UI success alone. A PASS requires accepted RPS evidence plus main-control validation that target data matches the scenario expectation.

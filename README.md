@@ -2,9 +2,9 @@
 
 ## Status / 状态
 
-EN: This branch is an experimental split of the original RPS Web UI testing skill into five smaller Codex skills. It is intended to reduce late-run context drift by loading only the active test domain. Keep `main` as the validated single-skill version until these split skills are verified in real RPS runs.
+EN: This branch is an experimental split of the original RPS Web UI testing skill into five smaller Codex skills, with an additional experiment for parallel downstream execution after structure migration is accepted. Keep `main` as the validated single-skill version until these split and parallel rules are verified in real RPS runs.
 
-中文：当前分支是实验版，把原来的 RPS Web UI 测试 skill 拆成五个更小的 Codex skills。目标是让 agent 在长时间测试后期只加载当前测试域，减少上下文串台和幻觉。在真实 RPS 测试中验证前，请继续把 `main` 作为稳定的单 skill 版本。
+中文：当前分支是实验版，把原来的 RPS Web UI 测试 skill 拆成五个更小的 Codex skills，并额外实验“结构迁移验收后，下游测试并行执行”的模式。在真实 RPS 测试中验证前，请继续把 `main` 作为稳定的单 skill 版本。
 
 ## Feature Highlights / 特色功能
 
@@ -14,6 +14,7 @@ EN:
 - Reference-document-driven execution: unclear RPS steps must be checked against user-provided documents under `docs/formal-test-runs/<run-id>/reference-docs/`.
 - Long-running supervision with heartbeat checks, stage acceptance, sub-agent handoff/recovery, stagnation nudges, and final closure.
 - Clear main-control vs UI-agent boundary: the UI executor operates RPS pages only; main control owns SQL, validation, acceptance, scope tracking, and final conclusions.
+- Parallel downstream lanes after structure migration: full sync, incremental sync, full+increment sync, and content comparison can run in isolated lanes when resources allow.
 - Three-document closure: scope tracker, Word test report, and defect register must be updated and verified before testing can be called complete.
 - Evidence chain management across case IDs, RPS task IDs, screenshots, SQL, logs, Word sections, and defect rows.
 - FAIL/BLOCKED classification that separates product defects from environment issues, missing prerequisites, permissions, expected validation stops, and unsupported paths.
@@ -27,6 +28,7 @@ EN:
 - 参考文档驱动执行：不清楚的 RPS 步骤必须优先查看用户放在 `docs/formal-test-runs/<run-id>/reference-docs/` 下的参考文档。
 - 支持长时间测试监督：心跳检查、阶段验收、子 agent 换班/恢复、停滞提醒和最终收尾。
 - 主控与 UI agent 分工清晰：UI executor 只操作 RPS 页面；主控负责 SQL、验证、验收、范围跟踪和最终结论。
+- 结构迁移后的下游并行 lane：资源允许且隔离充分时，全量、增量、全量+增量、内容比对可以并行推进。
 - 三份文档闭环：范围跟踪表、Word 测试报告、缺陷登记表必须更新并校验后，才能宣布测试完成。
 - 证据链管理：把 case ID、RPS task ID、截图、SQL、日志、Word 章节和缺陷行串起来，便于审计。
 - FAIL/BLOCKED 分类：区分产品缺陷、环境问题、前置条件缺失、权限不足、预期校验拦截和 unsupported path。
@@ -34,7 +36,7 @@ EN:
 - 共享文档模板：范围跟踪表、链路测试记录、缺陷登记表模板统一放在 shared 中。
 - LibreOffice/`soffice` 是可选报告渲染校验工具；不稳定时降级为 DOCX ZIP/XML/media/hash 检查。
 
-## Install The Experimental Split / 安装实验拆分版
+## Install This Parallel Experiment / 安装并行实验版
 
 EN: The repository root is not a skill root on this branch. Install the five skills separately from `skills/`.
 
@@ -42,7 +44,7 @@ EN: The repository root is not a skill root on this branch. Install the five ski
 
 ```bash
 mkdir -p ~/codex-skills ~/.codex/skills
-git clone -b split-rps-skills-experiment https://github.com/juew/rps-web-ui-testing-skill.git ~/codex-skills/rps-web-ui-testing-skill
+git clone -b codex/parallel-rps-skills-experiment https://github.com/juew/rps-web-ui-testing-skill.git ~/codex-skills/rps-web-ui-testing-skill
 ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-structure-migration ~/.codex/skills/rps-structure-migration
 ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-full-sync ~/.codex/skills/rps-full-sync
 ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-incremental-sync ~/.codex/skills/rps-incremental-sync
@@ -67,9 +69,27 @@ git pull
 | `rps-full-increment-sync` | EN: full+increment sync, full phase, running incremental phase, DML/DDL safe handoff. 中文：全量+增量、full 阶段、running incremental 阶段、DML/DDL 安全交接。 | EN: accepted structure migration. 中文：结构迁移已验收。 |
 | `rps-content-compare` | EN: quantity compare, static full compare, sampling compare, dynamic compare. 中文：数量比对、静态全量比对、抽样比对、动态比对。 | EN: accepted structure migration and synchronized baseline. 中文：结构迁移已验收，并已有同步基线。 |
 
-Shared formal-run rules, evidence rules, templates, and status taxonomy live under `shared/`.
+Shared formal-run rules, parallel execution rules, evidence rules, templates, and status taxonomy live under `shared/`.
 
-公共正式测试规则、证据规则、模板和状态分类放在 `shared/` 下。
+公共正式测试规则、并行执行规则、证据规则、模板和状态分类放在 `shared/` 下。
+
+## Parallel Execution Model / 并行执行模型
+
+EN: This branch tests a faster orchestration model:
+
+1. Run `rps-structure-migration` first as the serial prerequisite gate.
+2. After the required structure scope is accepted, main control may open isolated lanes for `rps-full-sync`, `rps-incremental-sync`, `rps-full-increment-sync`, and `rps-content-compare`.
+3. Each lane must have its own case IDs, object/schema boundary, task-name prefix, SQL/log/screenshot/evidence directories, and explicit stop points.
+4. If only one RPS browser/session/account is available, UI operations are queued, but SQL preparation, validation, evidence indexing, report drafting, and defect drafting can still proceed in parallel.
+5. Final user-facing documents are merged and verified by main control or assigned documentation agents after lane acceptance; lane agents should not concurrently write the same final workbook or report.
+
+中文：当前分支验证一种更快的调度模型：
+
+1. 先串行执行 `rps-structure-migration`，它是下游测试的前置 gate。
+2. 结构范围验收后，主控可以为 `rps-full-sync`、`rps-incremental-sync`、`rps-full-increment-sync`、`rps-content-compare` 打开相互隔离的并行 lane。
+3. 每个 lane 必须有独立的 case ID、对象/schema 边界、任务名前缀、SQL/log/截图/证据目录，以及明确停止点。
+4. 如果只有一个 RPS 浏览器/session/账号，UI 操作仍然排队执行；但 SQL 准备、验证、证据索引、报告草稿、缺陷草稿可以并行推进。
+5. 最终用户可见文档在 lane 验收后由主控或指定文档 agent 合并校验；lane agent 不应同时写同一个最终 workbook 或 report。
 
 ## Inputs Required From Users / 用户需要提供的信息
 

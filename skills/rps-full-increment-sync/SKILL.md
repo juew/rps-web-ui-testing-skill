@@ -8,6 +8,7 @@ description: Use this skill when testing RPS full + incremental synchronization 
 This skill specializes the RPS Web UI testing process for full + incremental synchronization cases. Use it together with the shared formal-run rules, shared templates, and this skill's focused reference:
 
 - Shared formal-run rules: `../../shared/references/rps-common-formal-run-rules.md`
+- Parallel execution rules when running beside other modules: `../../shared/references/rps-parallel-execution-rules.md`
 - Shared templates: `../../shared/assets/templates/`
 - Focused rules: `references/full-increment-sync-rules.md`
 
@@ -77,6 +78,7 @@ If the task is not safely running, the UI executor must not request DML/DDL exec
 For every accepted test point, collect or reference:
 
 - Official case ID and RPS task ID.
+- Lane name and isolated object/evidence boundary when running in parallel.
 - RPS task configuration screenshots, especially DML operation options and filter configuration when relevant.
 - Full phase monitor/log evidence and completion status.
 - Incremental running phase monitor/log evidence.

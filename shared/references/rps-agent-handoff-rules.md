@@ -27,6 +27,8 @@ Prefer resuming the same RPS UI agent with a narrow recovery instruction. Start 
 
 Only one sub-agent may own RPS page operations and formal RPS screenshots at any time.
 
+In a parallel-lane run, this rule applies per RPS browser/session/account. Multiple UI executors may operate at the same time only when main control records separate sessions/accounts/environments and assigns each to exactly one lane. If that separation is not recorded, RPS UI work is queued through a single UI executor while other lane work continues in parallel.
+
 During a handoff:
 
 - The outgoing RPS UI execution agent writes the handoff file and then stops RPS operations.
@@ -93,3 +95,5 @@ Word and Excel agents can continue in parallel during RPS UI handoff if their wr
 - Documentation agents must report the exact output files changed, case IDs covered, integrity checks performed, and any missing evidence. They must not return `completed` if the assigned Word/Excel file was not actually edited or verified.
 
 Do not block documentation work solely because the RPS UI executor is being replaced, as long as the needed execution/evidence files are already accepted or clearly marked as draft.
+
+For parallel downstream lanes, documentation agents should prefer lane-local drafts until main control accepts the lane. Final Word, scope workbook, and defect register writes require main-control merge ownership or explicitly assigned non-overlapping write ranges.

@@ -13,6 +13,7 @@ Use these shared rules from every split RPS testing skill. Domain-specific skill
 - Structure migration is the foundation for downstream synchronization and comparison testing.
 - Full sync, incremental sync, full+increment sync, and content comparison require accepted structure migration for the selected objects, unless the user records a run-specific waiver.
 - A waiver must name the affected case IDs, missing/deferred structure item, accepted risk, and later validation requirement.
+- After the structure gate is accepted, downstream modules may run as isolated parallel lanes. Use `rps-parallel-execution-rules.md` before opening more than one active downstream lane.
 
 ## Role Boundary
 
@@ -20,6 +21,7 @@ Main control owns:
 
 - Source/target SQL execution, setup, seed data, DML/DDL stimuli, validation, cleanup, stage acceptance, and final result classification.
 - Scope tracker, Word report, defect register, closure notes, and heartbeat/sub-agent supervision.
+- Parallel lane assignment, resource conflict resolution, lane acceptance, and final document merge.
 
 RPS UI executor owns:
 
@@ -43,6 +45,8 @@ Testing is complete only after the three user-facing documents are updated and v
 - the project defect register workbook
 
 Every accepted PASS, FAIL, BLOCKED, or accepted-with-notes case must have Word report coverage. Accepted FAIL items require either a defect-register row or a main-control explanation for non-registration. BLOCKED items enter the defect register only when main control classifies them as product defects.
+
+For parallel runs, lane agents should write lane-local summaries and evidence indexes first. Main control must accept each lane before merging its result into the final scope tracker, Word report, or defect register.
 
 ## Reference Documents
 

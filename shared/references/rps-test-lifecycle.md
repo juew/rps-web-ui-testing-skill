@@ -27,9 +27,15 @@
 - Validate results through RPS pages and data checks.
 - Adjust operation steps when a user-provided historical record or RPS product document shows a more accurate product flow, and record the adjustment in the execution log.
 
+## 3A. Parallel Downstream Execution
+
+After structure migration is accepted, downstream full sync, incremental sync, full+increment sync, and content comparison may run in parallel only when main control assigns isolated lanes.
+
+Each lane records its own scope, objects, task-name prefix, SQL/log/screenshot/evidence paths, owner, and stop points. If lanes share one browser session/account, queue RPS UI operations while allowing SQL preparation, validation, evidence indexing, and documentation drafts to proceed in parallel.
+
 ## 4. Record Results
 
-- Update Word report section with test说明表, steps, screenshots, SQL/log evidence, result, and conclusion.
+- Update Word report section with test说明表, steps, screenshots, SQL/log evidence, result, and conclusion. In parallel runs, merge only accepted lane results into the final Word report.
 - Include or reference the SQL used for source table/data generation, DML changes, validation, and cleanup.
 - Register defects in Excel using the RPS defect template.
 - Keep task ID separate from official case ID.

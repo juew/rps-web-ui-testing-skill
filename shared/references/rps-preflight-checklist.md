@@ -39,7 +39,7 @@ Stop if the user has not approved a real execution step that would operate the R
 Required scan before commit, push, or release:
 
 ```bash
-rg -n -i "(password|passwd|pwd|token|secret|api[_-]?key|access[_-]?key|jdbc:|jdbc|https?://10\.|10\.[0-9]{1,3}\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.|账号|密码|密钥|内网|Bearer|Authorization)" README.md SKILL.md references
+rg -n -i "(password|passwd|pwd|token|secret|api[_-]?key|access[_-]?key|jdbc:|jdbc|https?://10\.|10\.[0-9]{1,3}\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.|账号|密码|密钥|内网|Bearer|Authorization)" README.md skills shared
 ```
 
 ## 4. Check Local Tools

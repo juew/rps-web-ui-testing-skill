@@ -1,153 +1,158 @@
-# RPS Web UI Testing Skill
+# RPS Web UI Testing Skills
 
-This skill supports formal RPS Web UI testing, including RPS UI execution, evidence capture, SQL/log artifact coordination, Word report updates, scope tracking, and defect register maintenance.
+## Status / 状态
 
-## 特色功能
+EN: This branch is an experimental split of the original RPS Web UI testing skill into five smaller Codex skills. It is intended to reduce late-run context drift by loading only the active test domain. Keep `main` as the validated single-skill version until these split skills are verified in real RPS runs.
 
-This skill is designed for long-running, evidence-heavy RPS formal testing rather than generic web UI clicking. Its main capabilities are:
+中文：当前分支是实验版，把原来的 RPS Web UI 测试 skill 拆成五个更小的 Codex skills。目标是让 agent 在长时间测试后期只加载当前测试域，减少上下文串台和幻觉。在真实 RPS 测试中验证前，请继续把 `main` 作为稳定的单 skill 版本。
 
-- **RPS 专用流程覆盖**：覆盖结构迁移、全量同步、增量同步、全量+增量同步、DDL 同步、内容比对、预检查、任务监控、任务日志和异常场景。
-- **参考文档驱动执行**：遇到不熟悉的 RPS 操作步骤时，要求优先读取用户放入 `docs/formal-test-runs/<run-id>/reference-docs/` 的历史报告或产品文档，避免凭经验猜测。
-- **长时间测试监督**：支持心跳监督、阶段验收、子 agent 换班/恢复、停滞提醒和最终自动收尾，适合跨小时甚至隔夜的正式测试。
-- **主控与 UI agent 分工**：RPS UI executor 只操作页面和采集 UI 证据；主控负责 SQL 执行、数据验证、阶段验收、范围跟踪和最终结论，降低误操作风险。
-- **三份文档闭环**：强制把最终结果同步到范围跟踪表、Word 测试报告和缺陷登记表。UI 执行完成不等于测试完成，三份文档未校验前不能关闭测试。
-- **证据链管理**：将 case ID、RPS task ID、截图、SQL、redacted logs、Word 章节和缺陷行交叉索引，方便回看和审计。
-- **FAIL/BLOCKED 分类规则**：区分产品缺陷、环境问题、预置条件缺失、权限不足、预期校验拦截和 unsupported path，避免把所有 BLOCKED 都误登记为缺陷。
-- **敏感信息保护**：明确禁止把账号、密码、token、JDBC 串、内网 URL/IP 或私有 endpoint 写入 skill、报告、缺陷表或截图产物。
-- **文档模板资产**：内置范围跟踪表、链路测试报告、缺陷登记表的空白模板，可复制到每次 run 目录后再写入运行数据。
-- **LibreOffice 可选校验**：支持用 `soffice` 做 Word 报告视觉渲染检查；如果本机或沙箱中崩溃，会降级为 DOCX ZIP/XML/media/hash 检查和人工视觉复核，不阻塞测试收尾。
+## Feature Highlights / 特色功能
 
-## 安装方式
+EN:
 
-This repository root is the skill root. Install it by cloning the repository and linking the repository directory into Codex skills:
+- RPS-specific coverage for structure migration, full sync, incremental sync, full+increment sync, DDL sync, content comparison, precheck, task monitor, task logs, and abnormal flows.
+- Reference-document-driven execution: unclear RPS steps must be checked against user-provided documents under `docs/formal-test-runs/<run-id>/reference-docs/`.
+- Long-running supervision with heartbeat checks, stage acceptance, sub-agent handoff/recovery, stagnation nudges, and final closure.
+- Clear main-control vs UI-agent boundary: the UI executor operates RPS pages only; main control owns SQL, validation, acceptance, scope tracking, and final conclusions.
+- Three-document closure: scope tracker, Word test report, and defect register must be updated and verified before testing can be called complete.
+- Evidence chain management across case IDs, RPS task IDs, screenshots, SQL, redacted logs, Word sections, and defect rows.
+- FAIL/BLOCKED classification that separates product defects from environment issues, missing prerequisites, permissions, expected validation stops, and unsupported paths.
+- Sensitive information protection: credentials, tokens, JDBC strings, internal URLs/IPs, and private endpoints must not be stored in skill files or formal artifacts.
+- Shared document templates for scope tracking, chain test records, and defect registers.
+- Optional LibreOffice/`soffice` rendering checks for Word reports, with fallback to DOCX ZIP/XML/media/hash checks when rendering is unstable.
+
+中文：
+
+- RPS 专用流程覆盖：结构迁移、全量同步、增量同步、全量+增量同步、DDL 同步、内容比对、预检查、任务监控、任务日志和异常流程。
+- 参考文档驱动执行：不清楚的 RPS 步骤必须优先查看用户放在 `docs/formal-test-runs/<run-id>/reference-docs/` 下的参考文档。
+- 支持长时间测试监督：心跳检查、阶段验收、子 agent 换班/恢复、停滞提醒和最终收尾。
+- 主控与 UI agent 分工清晰：UI executor 只操作 RPS 页面；主控负责 SQL、验证、验收、范围跟踪和最终结论。
+- 三份文档闭环：范围跟踪表、Word 测试报告、缺陷登记表必须更新并校验后，才能宣布测试完成。
+- 证据链管理：把 case ID、RPS task ID、截图、SQL、脱敏日志、Word 章节和缺陷行串起来，便于审计。
+- FAIL/BLOCKED 分类：区分产品缺陷、环境问题、前置条件缺失、权限不足、预期校验拦截和 unsupported path。
+- 敏感信息保护：账号、密码、token、JDBC 串、内网 URL/IP、私有 endpoint 不得写入 skill 或正式产物。
+- 共享文档模板：范围跟踪表、链路测试记录、缺陷登记表模板统一放在 shared 中。
+- LibreOffice/`soffice` 是可选报告渲染校验工具；不稳定时降级为 DOCX ZIP/XML/media/hash 检查。
+
+## Install The Experimental Split / 安装实验拆分版
+
+EN: The repository root is not a skill root on this branch. Install the five skills separately from `skills/`.
+
+中文：当前分支的仓库根目录不是 skill 根目录。需要分别安装 `skills/` 下的五个 skill。
 
 ```bash
 mkdir -p ~/codex-skills ~/.codex/skills
-git clone https://github.com/juew/rps-web-ui-testing-skill.git ~/codex-skills/rps-web-ui-testing-skill
-ln -sfn ~/codex-skills/rps-web-ui-testing-skill ~/.codex/skills/rps-web-ui-testing
+git clone -b split-rps-skills-experiment https://github.com/juew/rps-web-ui-testing-skill.git ~/codex-skills/rps-web-ui-testing-skill
+ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-structure-migration ~/.codex/skills/rps-structure-migration
+ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-full-sync ~/.codex/skills/rps-full-sync
+ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-incremental-sync ~/.codex/skills/rps-incremental-sync
+ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-full-increment-sync ~/.codex/skills/rps-full-increment-sync
+ln -sfn ~/codex-skills/rps-web-ui-testing-skill/skills/rps-content-compare ~/.codex/skills/rps-content-compare
 ```
 
-To update later:
+Update later / 后续更新：
 
 ```bash
 cd ~/codex-skills/rps-web-ui-testing-skill
 git pull
 ```
 
-## 1. 用户需要提供的信息
+## Five Skills / 五个 Skill
 
-Before a formal test run starts, provide as much of the following as possible.
-
-### 测试目标和范围
-
-- RPS 版本号、测试批次或运行名称。
-- 本轮测试目标，例如结构迁移、全量同步、增量同步、全量+增量同步、内容比对、异常校验或回归。
-- 本轮测试范围：需要执行的 case ID、模块、链路、页面、功能点。
-- 明确不在本轮范围内的内容，如果有。
-- 是否允许自动推进到下一条 case，或每条 case 都需要人工确认。
-
-### 环境和权限
-
-- RPS Web 访问方式和账号可用性说明。不要把密码、token、JDBC 串、内部 URL 或敏感 endpoint 写入 skill 文件。
-- 源端和目标端数据库类型、版本、部署形态、连接是否已配置。
-- 是否允许使用本机自动化工具，例如 Chrome/Computer Use/Playwright、Swift 截图脚本、DBeaver、LibreOffice 或其他文档渲染工具。
-- 如果需要无值守长跑，说明是否允许创建项目本地 runtime vault；敏感信息只能保存在 git-ignored runtime 路径。
-
-### 参考文档
-
-- 用户提供的历史测试报告、产品步骤文档、截图说明、问题单或验收标准。
-- 推荐放置目录：
-
-  `docs/formal-test-runs/<run-id>/reference-docs/`
-
-- 如果参考文档在其他路径，需要用户明确授权 exact path，或先复制到上述目录。
-- 对于不理解的 RPS 步骤，agent 必须优先查本轮 `reference-docs/`，不能靠猜。
-
-### 测试数据和 SQL
-
-- 本轮允许使用的 schema、表、对象范围、数据准备方式。
-- 是否允许 agent 生成测试表和测试数据。正式测试默认要求测试过程内生成源表/源数据，除非用户明确批准使用现成数据集。
-- 源端准备 SQL、目标端准备 SQL、DML/DDL 刺激 SQL、目标验证 SQL、清理 SQL 的要求。
-- 哪些 SQL 由主控执行，哪些只保存为报告证据。RPS UI executor 不执行 SQL。
-
-### 文档模板和输出位置
-
-- 范围跟踪表模板或现有 `scope-tracking-draft.xlsx`。
-- Word 测试报告模板或现有 `report-draft.docx`。
-- 缺陷登记表模板或现有缺陷 workbook。
-- 测试运行目录，推荐：
-
-  `docs/formal-test-runs/<run-id>/`
-
-### 验收和通知规则
-
-- PASS、FAIL、BLOCKED、WARNING、NEEDS_RETEST 的项目口径。
-- FAIL 是否都登记缺陷；BLOCKED 在什么条件下登记为产品缺陷。
-- 哪些阶段需要用户确认，哪些可以由主控验收。
-- 心跳监督频率、是否允许子 agent 并行处理 Word/Excel 文档。
-
-## 2. 输出产出
-
-Formal testing is not complete when RPS UI execution finishes. It is complete only after the user-facing documents and supporting artifacts are updated and verified.
-
-### 主要用户可见文档
-
-These are the three documents the user relies on to understand final test results.
-
-| 文档 | 默认位置 | 内容要求 |
+| Skill | Scope / 范围 | Prerequisite / 前置条件 |
 | --- | --- | --- |
-| 范围跟踪表 | `docs/formal-test-runs/<run-id>/scope-tracking-draft.xlsx` | 每个 case 的状态、计划/实际时间、测试结果、进度描述、备注；结果口径必须与验收记录一致。 |
-| Word 测试报告 | `docs/formal-test-runs/<run-id>/report-draft.docx` | 每个已验收 case 的测试说明、步骤、截图、SQL/log 证据、实际结果、测试结论。 |
-| 缺陷登记表 | `docs/formal-test-runs/<run-id>/<defect-register>.xlsx` | 已确认需要登记的 FAIL 或产品缺陷类 BLOCKED；包含复现描述、任务 ID、截图、问题类型和链路信息。 |
+| `rps-structure-migration` | EN: structure migration for tables, sequences, indexes, foreign keys, users, views, synonyms. 中文：表、序列、索引、外键、用户、视图、同义词等结构迁移。 | EN: first stage. 中文：基础阶段，其他测试依赖它。 |
+| `rps-full-sync` | EN: full sync, non-filter, row filter, column filter, field-value filtering/truncation, precheck. 中文：全量同步、非过滤、行过滤、列过滤、字段值截取/过滤、预检查。 | EN: accepted structure migration. 中文：结构迁移已验收。 |
+| `rps-incremental-sync` | EN: incremental DML, insert/update/delete, selected/unselected DML options, filters, conditional DDL. 中文：增量 DML、insert/update/delete、DML 勾选/不勾选、过滤、条件 DDL。 | EN: accepted structure migration and required baseline. 中文：结构迁移已验收，并具备所需基线。 |
+| `rps-full-increment-sync` | EN: full+increment sync, full phase, running incremental phase, DML/DDL safe handoff. 中文：全量+增量、full 阶段、running incremental 阶段、DML/DDL 安全交接。 | EN: accepted structure migration. 中文：结构迁移已验收。 |
+| `rps-content-compare` | EN: quantity compare, static full compare, sampling compare, dynamic compare. 中文：数量比对、静态全量比对、抽样比对、动态比对。 | EN: accepted structure migration and synchronized baseline. 中文：结构迁移已验收，并已有同步基线。 |
 
-If a FAIL or BLOCKED item is not entered into the defect register, the non-registration reason must be recorded in the Word report, scope tracker, or closure notes.
+Shared formal-run rules, evidence rules, templates, and status taxonomy live under `shared/`.
 
-### 支撑性运行产物
+公共正式测试规则、证据规则、模板和状态分类放在 `shared/` 下。
 
-The run directory may also contain:
+## Inputs Required From Users / 用户需要提供的信息
 
-- `run-plan.md`: 本轮测试计划和范围。
-- `stage-acceptance.md`: 每个阶段的主控验收结论。
-- `execution-log.md`: 执行过程、关键动作、异常和验收记录。
-- `agent-heartbeat.md`: 长跑监督和子 agent 状态。
-- `evidence-index.md`: 截图、日志、SQL、任务 ID 与 case ID 的索引。
-- `agent-handoff-rps-ui.md`: UI 执行 agent 换班或恢复交接文件。
-- `open-items.md` 或 closure notes：未解决项、人工确认项、非缺陷 BLOCKED 说明。
+EN: Before a formal test run starts, provide as much of the following as possible:
 
-### SQL 和日志产物
+- RPS version, test batch/run name, test objective, and test scope.
+- Case IDs, module names, chain, pages, and function points to execute.
+- Explicit out-of-scope items.
+- Whether the agent may advance automatically or must stop for confirmation after each case.
+- RPS Web access availability, source/target database type and version, deployment shape, and whether connections are already configured.
+- Approved local automation tools, such as Chrome/Computer Use/Playwright, screenshot scripts, DBeaver, or optional LibreOffice rendering.
+- User-provided reference documents under `docs/formal-test-runs/<run-id>/reference-docs/`.
+- Source/target setup SQL, DML/DDL stimulus SQL, validation SQL, cleanup SQL, and ownership of each SQL step.
+- Scope tracker template, Word report template, defect register template, and output run directory.
+- PASS/FAIL/BLOCKED policy, defect-registration policy, heartbeat rules, and sub-agent permissions.
 
-Recommended locations:
+中文：正式测试开始前，请尽量提供：
+
+- RPS 版本、测试批次/运行名称、测试目标和测试范围。
+- 需要执行的 case ID、模块、链路、页面和功能点。
+- 明确不在本轮范围内的内容。
+- 是否允许 agent 自动推进，还是每条 case 后都需要人工确认。
+- RPS Web 可访问性、源端/目标端数据库类型和版本、部署形态、连接是否已配置。
+- 允许使用的本地自动化工具，例如 Chrome/Computer Use/Playwright、截图脚本、DBeaver、可选 LibreOffice 渲染。
+- 用户提供的参考文档，放在 `docs/formal-test-runs/<run-id>/reference-docs/`。
+- 源端/目标端准备 SQL、DML/DDL 刺激 SQL、验证 SQL、清理 SQL，以及每个 SQL 步骤的执行责任。
+- 范围跟踪表模板、Word 报告模板、缺陷登记表模板和输出运行目录。
+- PASS/FAIL/BLOCKED 口径、缺陷登记口径、心跳规则和子 agent 权限。
+
+## Outputs / 输出产物
+
+EN: Formal testing is not complete when RPS UI execution finishes. It is complete only after the user-facing documents and supporting artifacts are updated and verified.
+
+中文：RPS UI 执行结束不代表正式测试完成。只有用户可见文档和支撑产物都更新并校验后，才能关闭测试。
+
+### Main User-Facing Documents / 主要用户可见文档
+
+| Document / 文档 | Default Location / 默认位置 | Requirement / 要求 |
+| --- | --- | --- |
+| Scope tracker / 范围跟踪表 | `docs/formal-test-runs/<run-id>/scope-tracking-draft.xlsx` | EN: status, dates, result, progress, notes for each case. 中文：每个 case 的状态、日期、结果、进度、备注。 |
+| Word report / Word 测试报告 | `docs/formal-test-runs/<run-id>/report-draft.docx` | EN: steps, screenshots, SQL/log evidence, actual result, conclusion. 中文：步骤、截图、SQL/log 证据、实际结果、测试结论。 |
+| Defect register / 缺陷登记表 | `docs/formal-test-runs/<run-id>/<defect-register>.xlsx` | EN: confirmed FAIL/product-defect BLOCKED items. 中文：已确认需要登记的 FAIL 或产品缺陷类 BLOCKED。 |
+
+If a FAIL or BLOCKED item is not entered into the defect register, record the reason in the Word report, scope tracker, or closure notes.
+
+如果 FAIL 或 BLOCKED 不进入缺陷登记表，必须在 Word 报告、范围表或收尾记录中说明原因。
+
+### Supporting Artifacts / 支撑产物
+
+- `run-plan.md`: EN: scope and execution plan. 中文：测试范围和执行计划。
+- `stage-acceptance.md`: EN: main-control acceptance records. 中文：主控阶段验收记录。
+- `execution-log.md`: EN: key actions, errors, and accepted results. 中文：关键动作、异常和验收结果。
+- `agent-heartbeat.md`: EN: long-run supervision and sub-agent state. 中文：长跑监督和子 agent 状态。
+- `evidence-index.md`: EN: index of screenshots, logs, SQL, task IDs, and case IDs. 中文：截图、日志、SQL、任务 ID 和 case ID 索引。
+- `agent-handoff-rps-ui.md`: EN: UI-agent handoff/recovery record. 中文：UI agent 换班/恢复交接记录。
+- `open-items.md` or closure notes: EN: unresolved items and non-defect BLOCKED explanations. 中文：未解决项和非缺陷 BLOCKED 说明。
+
+Recommended SQL/log locations / 推荐 SQL 和日志目录：
 
 - `docs/formal-test-runs/<run-id>/sql/`
 - `docs/formal-test-runs/<run-id>/logs/`
 
-Common files include:
-
-- `rps_<case>_source_prepare.sql`
-- `rps_<case>_target_prepare.sql`
-- `rps_<case>_source_increment_dml.sql`
-- `rps_<case>_source_ddl_*.sql`
-- `rps_<case>_target_validation.sql`
-- `*.redacted.log`
-
-Logs should be redacted before entering user-facing reports.
-
-### 截图和证据产物
-
-Recommended locations:
+Recommended screenshot/evidence locations / 推荐截图和证据目录：
 
 - `docs/formal-test-runs/<run-id>/screenshots/`
 - `docs/formal-test-runs/<run-id>/evidence/`
 
-Evidence should include RPS-only screenshots for formal report use, plus auxiliary screenshots/logs only when useful. Screenshots embedded in Word/Excel must match the referenced case ID, task ID, and result.
+## Completion Standard / 完成标准
 
-## 3. 完成标准
-
-A formal run can be closed only when:
+EN: A formal run can be closed only when:
 
 - The scope tracker is updated through the final accepted case.
 - The Word report includes every accepted PASS, FAIL, BLOCKED, or accepted-with-notes item.
 - The defect register contains all required defect rows, or the absence of a defect row is explicitly justified.
-- Case IDs, task IDs, status wording, SQL status, screenshots, and conclusions are consistent across the three user-facing documents and run logs.
-- Workbook/DOCX integrity checks pass, or any rendering limitation is clearly recorded for human visual review.
-- Heartbeat automation and sub-agents are stopped only after the final documents are verified.
+- Case IDs, task IDs, result wording, SQL status, screenshots, and conclusions are consistent across documents and logs.
+- Workbook/DOCX integrity checks pass, or rendering limitations are recorded for human visual review.
+- Heartbeat automation and sub-agents are stopped only after final documents are verified.
+
+中文：正式测试只有满足以下条件才能关闭：
+
+- 范围跟踪表已更新到最后一个已验收 case。
+- Word 报告覆盖所有已验收 PASS、FAIL、BLOCKED 或 accepted-with-notes 项。
+- 缺陷登记表包含所有应登记缺陷，或明确说明不登记原因。
+- case ID、task ID、结果口径、SQL 状态、截图和结论在文档与日志中一致。
+- Workbook/DOCX 完整性检查通过，或已记录渲染限制并要求人工视觉复核。
+- 只有最终文档验证完成后，才能停止心跳和关闭子 agent。
